@@ -229,7 +229,7 @@
     }
 
     document.getElementById("link").addEventListener('click', function(e) {
-      const dataURL = canvas.toDataURL("image/jpeg");
+      const dataURL = canvas.toDataURL("image/png", 1.0);
       const link = document.createElement("a");
       document.body.appendChild(link);
 
