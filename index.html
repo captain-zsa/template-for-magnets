@@ -150,7 +150,7 @@
   <div class="center">
     <h3>Как будет выглядеть изображение</h3>
     <p>Серая рамка показывает весь холст, при печати её не будет видно</p>
-    <canvas id="canvas" width="595" height="851"></canvas>
+    <canvas id="canvas" width="1190" height="1702"></canvas>
   </div>
 
   <script>
@@ -166,8 +166,8 @@
         alert("Заполните все поля");
         return;
       }
-      width = Number(widthInput.value);
-      height = Number(heightInput.value);
+      width = Number(widthInput.value) * 2;
+      height = Number(heightInput.value) * 2;
 
       document.querySelector(".sizes").style.display = "none";
       document.querySelector(".custom-file-upload").style.display = "flex";
@@ -193,8 +193,8 @@
     function drawImagesOnCanvas(canvas, fileInput) {
       const ctx = canvas.getContext("2d");
 
-      const gridWidth = 595;
-      const gridHeight = 851;
+      const gridWidth = 1190;
+      const gridHeight = 1702;
       canvas.width = gridWidth;
       canvas.height = gridHeight;
 
