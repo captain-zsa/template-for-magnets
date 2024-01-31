@@ -126,21 +126,29 @@
 <body onload="draw();">
   <div class="sizes" style="display: flex;">
     <h3>Задай размеры для каждой картинки</h3>
-    <p>Помни, что размеры указываются в px</p>
+    <p>Помни, что размеры указываются в px (и лучше всегда опираться на px)</p>
     <label>
-      <span>Ширина</span>
+      <span>Ширина в px</span>
       <input type="number" placeholder="число" id="width" value="266">
+      <span id="widthCm">~7.04см</span><br>
+      <span id="widthMm">~70.38мм</span>
     </label>
     <label>
-      <span>Высота</span>
+      <span>Высота в px</span>
       <input type="number" placeholder="число" id="height" value="266">
+      <span id="heightCm">~7.04см</span><br>
+      <span id="heightMm">~70.38мм</span>
     </label>
-
     <button type="button" class="button" id="next">Следующий шаг</button>
   </div>
   <label class="custom-file-upload">
     <input type="file" id="fileInput" multiple accept=".jpg,.jpeg,.png">
     <span class="button">Выбрать файлы</span>
+    <p>Исходники должны быть в png и размером:<br>
+      <span id="fileSizePx"></span><br>
+      <span id="fileSizeCm"></span><br>
+      <span id="fileSizeMm"></span>
+    </p>
     <button class="button button-silver" id="back">Или вернуться на шаг назад</button>
   </label>
   <div class="buttons" style="display: none;">
@@ -154,12 +162,50 @@
   </div>
 
   <script>
+    // create function to convert px to cm
+    function pxToCm(px) {
+      return px * 0.0264583333;
+    }
+    function pxToMm(px) {
+      return px * 0.264583333;
+    }
+
+    const widthCm = document.querySelector("#widthCm");
+    const heightCm = document.querySelector("#heightCm");
+    const widthMm = document.querySelector("#widthMm");
+    const heightMm = document.querySelector("#heightMm");
+
+    const fileSizePx = document.querySelector("#fileSizePx");
+    const fileSizeCm = document.querySelector("#fileSizeCm");
+    const fileSizeMm = document.querySelector("#fileSizeMm");
+
     const next = document.querySelector("#next");
     const back = document.querySelector("#back");
     const widthInput = document.querySelector("#width");
     const heightInput = document.querySelector("#height");
+
     let width = 266;
     let height = 266;
+
+    function installSizes(width, height) {
+      widthCm.textContent = pxToCm(width).toFixed(2) + "см";
+      heightCm.textContent = pxToCm(height).toFixed(2) + "см";
+      widthMm.textContent = pxToMm(width).toFixed(2) + "мм";
+      heightMm.textContent = pxToMm(height).toFixed(2) + "мм";
+    }
+
+    function installAllSizes(width, hegiht) {
+      fileSizePx.textContent = `~${width}x${height} px`;
+      fileSizeCm.textContent = `~${pxToCm(width).toFixed(2)} x ${pxToCm(height).toFixed(2)} см`;
+      fileSizeMm.textContent = `~${pxToMm(width).toFixed(2)} x ${pxToMm(height).toFixed(2)} мм`;
+    }
+
+    widthInput.addEventListener("input", function () {
+      installSizes(widthInput.value, heightInput.value);
+    });
+    heightInput.addEventListener("input", function () {
+      installSizes(widthInput.value, heightInput.value);
+    });
 
     next.addEventListener("click", function () {
       if(!widthInput.value || !heightInput.value) {
@@ -168,6 +214,8 @@
       }
       width = Number(widthInput.value) * 3;
       height = Number(heightInput.value) * 3;
+
+      installAllSizes(width, height);
 
       document.querySelector(".sizes").style.display = "none";
       document.querySelector(".custom-file-upload").style.display = "flex";
