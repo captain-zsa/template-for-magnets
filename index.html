@@ -139,6 +139,10 @@
       <span id="heightCm">~7.04см</span><br>
       <span id="heightMm">~70.38мм</span>
     </label>
+    <label>
+      <span>Сколько элементов в строке</span>
+      <input type="number" id="colInRow" value="2">
+    </label>
     <button type="button" class="button" id="next">Следующий шаг</button>
   </div>
   <label class="custom-file-upload">
@@ -183,9 +187,11 @@
     const back = document.querySelector("#back");
     const widthInput = document.querySelector("#width");
     const heightInput = document.querySelector("#height");
+    const colInRowInput = document.querySelector("#colInRow");
 
     let width = 266;
     let height = 266;
+    let colInRow = 2;
 
     function installSizes(width, height) {
       widthCm.textContent = pxToCm(width).toFixed(2) + "см";
@@ -214,6 +220,7 @@
       }
       width = Number(widthInput.value) * 3;
       height = Number(heightInput.value) * 3;
+      colInRow = Number(colInRowInput.value);
 
       installAllSizes(width, height);
 
@@ -259,8 +266,8 @@
           reader.onload = function (e) {
             const img = new Image();
             img.onload = function () {
-              const row = Math.floor(i / 2);
-              const col = i % 2;
+              const row = Math.floor(i / colInRow);
+              const col = i % colInRow;
               const x = col * cellWidth;
               const y = row * cellHeight;
               ctx.drawImage(img, x, y, cellWidth, cellHeight);
