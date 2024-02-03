@@ -50,6 +50,16 @@
       background-image: linear-gradient(to right, #00c500 0%, #0bf626 51%, #00c500 100%);
     }
 
+    .button-brown {
+      background-image: linear-gradient(to right, #c56900 0%, #f6ac0b 51%, #c56900 100%);
+    }
+
+    .button-small {
+      padding: 10px 15px;
+      font-size: 16px;
+      border-radius: 10px;
+    }
+
     .button-silver {
       background-image: linear-gradient(to right, #cbcbcb 0%, #969696 51%, #cbcbcb 100%);
     }
@@ -121,23 +131,39 @@
       outline: 0;
       box-shadow: 0 0 0 0.2rem rgba(158, 158, 158, 0.25);
     }
+
+    .buttons-sizes {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
     </style>
 </head>
 <body onload="draw();">
   <div class="sizes" style="display: flex;">
     <h3>Задай размеры для каждой картинки</h3>
-    <p>Помни, что размеры указываются в px (и лучше всегда опираться на px)</p>
+    <p>Помни, что размеры указываются в px</p>
+    <div class="buttons-sizes">
+      <button
+        class="button button-brown button-small button-install-size"
+        data-size-width="1175"
+        data-size-height="746"
+      >Установить горизонтальные 746x1175</button>
+
+      <button
+        class="button button-red button-small button-install-size"
+        data-size-width="1091"
+        data-size-height="1091"
+      >Установить квадратные 1091x1091</button>
+    </div>
     <label>
       <span>Ширина в px</span>
-      <input type="number" placeholder="число" id="width" value="1064">
-      <span id="widthCm">~28.15см</span><br>
-      <span id="widthMm">~281.52мм</span>
+      <input type="number" placeholder="число" id="width" value="1091">
     </label>
     <label>
       <span>Высота в px</span>
-      <input type="number" placeholder="число" id="height" value="1064">
-      <span id="heightCm">~28.15см</span><br>
-      <span id="heightMm">~281.52мм</span>
+      <input type="number" placeholder="число" id="height" value="1091">
     </label>
     <label>
       <span>Сколько элементов в строке</span>
@@ -149,9 +175,7 @@
     <input type="file" id="fileInput" multiple accept=".jpg,.jpeg,.png">
     <span class="button">Выбрать файлы</span>
     <p>Исходники должны быть в png и размером:<br>
-      <span id="fileSizePx"></span><br>
-      <span id="fileSizeCm"></span><br>
-      <span id="fileSizeMm"></span>
+      <span id="fileSizePx"></span>
     </p>
     <button class="button button-silver" id="back">Или вернуться на шаг назад</button>
   </label>
@@ -174,43 +198,27 @@
       return px * 0.264583333;
     }
 
-    const widthCm = document.querySelector("#widthCm");
-    const heightCm = document.querySelector("#heightCm");
-    const widthMm = document.querySelector("#widthMm");
-    const heightMm = document.querySelector("#heightMm");
-
     const fileSizePx = document.querySelector("#fileSizePx");
-    const fileSizeCm = document.querySelector("#fileSizeCm");
-    const fileSizeMm = document.querySelector("#fileSizeMm");
 
     const next = document.querySelector("#next");
     const back = document.querySelector("#back");
     const widthInput = document.querySelector("#width");
     const heightInput = document.querySelector("#height");
     const colInRowInput = document.querySelector("#colInRow");
+    const buttonInstallSize = document.querySelectorAll('.button-install-size');
 
-    let width = 1064;
-    let height = 1064;
+    let width = 1091;
+    let height = 1091;
     let colInRow = 2;
 
-    function installSizes(width, height) {
-      widthCm.textContent = pxToCm(width).toFixed(2) + "см";
-      heightCm.textContent = pxToCm(height).toFixed(2) + "см";
-      widthMm.textContent = pxToMm(width).toFixed(2) + "мм";
-      heightMm.textContent = pxToMm(height).toFixed(2) + "мм";
-    }
+    buttonInstallSize.forEach(button => {
+      button.addEventListener('click', function(e) {
+        width = Number(e.target.getAttribute('data-size-width'));
+        height = Number(e.target.getAttribute('data-size-height'));
 
-    function installAllSizes(width, hegiht) {
-      fileSizePx.textContent = `~${width}x${height} px`;
-      fileSizeCm.textContent = `~${pxToCm(width).toFixed(2)} x ${pxToCm(height).toFixed(2)} см`;
-      fileSizeMm.textContent = `~${pxToMm(width).toFixed(2)} x ${pxToMm(height).toFixed(2)} мм`;
-    }
-
-    widthInput.addEventListener("input", function () {
-      installSizes(widthInput.value, heightInput.value);
-    });
-    heightInput.addEventListener("input", function () {
-      installSizes(widthInput.value, heightInput.value);
+        widthInput.value = width;
+        heightInput.value = height;
+      })
     });
 
     next.addEventListener("click", function () {
@@ -222,7 +230,7 @@
       height = Number(heightInput.value);
       colInRow = Number(colInRowInput.value);
 
-      installAllSizes(width, height);
+      fileSizePx.textContent = `~${width}x${height} px`;
 
       document.querySelector(".sizes").style.display = "none";
       document.querySelector(".custom-file-upload").style.display = "flex";
