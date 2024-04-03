@@ -46,6 +46,11 @@
       background-image: linear-gradient(to right, #c50000 0%, #f60b0b 51%, #c50000 100%);
     }
 
+    .button-yellow {
+      color: #000;
+      background-image: linear-gradient(to right, #c5b800 0%, #cbf60b 51%, #c5b800 100%);
+    }
+
     .button-green {
       background-image: linear-gradient(to right, #00c500 0%, #0bf626 51%, #00c500 100%);
     }
@@ -149,13 +154,26 @@
         class="button button-brown button-small button-install-size"
         data-size-width="1175"
         data-size-height="746"
-      >Установить горизонтальные 746x1175</button>
+      >Горизонтальные 1175х746</button>
 
       <button
         class="button button-red button-small button-install-size"
         data-size-width="1099"
         data-size-height="1099"
-      >Установить квадратные 1099x1099</button>
+      >Квадратные 1099x1099</button>
+    </div>
+    <div class="buttons-sizes buttons-sizes--two">
+      <button
+        class="button button-yellow button-small button-install-size"
+        data-size-width="1132"
+        data-size-height="718"
+      >МЕГА горизонтальные 1132х718</button>
+
+      <button
+        class="button button-yellow button-small button-install-size"
+        data-size-width="1061"
+        data-size-height="1061"
+      >МЕГА квадратные 1061x1061</button>
     </div>
     <label>
       <span>Ширина в px</span>
@@ -316,8 +334,8 @@
                     img.onload = function () {
                         const row = Math.floor(index / colInRow);
                         const col = index % colInRow;
-                        const x = col * cellWidth;
-                        const y = row * cellHeight;
+                        const x = col * cellWidth + 100;
+                        const y = row * cellHeight + 100;
                         ctx.drawImage(img, x, y, cellWidth, cellHeight);
                     };
                     img.src = e.target.result;
